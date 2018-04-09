@@ -19,6 +19,7 @@ extern "C" {
 #include <config.h>
 #include <epan/packet.h>
 #include <epan/conversation.h>
+#include <epan/address.h>
 #include "whatsapp-proto.h"
 }
 
@@ -594,7 +595,7 @@ Tree * DissectSession::next_tree(DataBuffer * data,proto_tree *tree, tvbuff_t *t
 		if (global_enable_decoding and found_auth) {
 			DataBuffer * decoded_data;
 			RC4Decoder * decoder = this->in;
-			bool dataout = ADDRESSES_EQUAL(&server_addr,&pinfo->dst);
+			bool dataout = addresses_equal(&server_addr,&pinfo->dst);
 			if (dataout)
 				decoder = out;
 		
@@ -760,7 +761,7 @@ Tree * DissectSession::read_tree(DataBuffer * data, proto_tree *tree, tvbuff_t *
 			resp = (*blist)[0];
 			resp->getHMAC(hmac);
 		}else{
-			bool dataout = ADDRESSES_EQUAL(&server_addr,&pinfo->dst);
+			bool dataout = addresses_equal(&server_addr,&pinfo->dst);
 			
 			unsigned char * skey = dataout ? &session_key[20*1] : &session_key[20*3];
 
