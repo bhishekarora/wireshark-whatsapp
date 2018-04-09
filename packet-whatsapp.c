@@ -97,7 +97,7 @@ gboolean fld_chk_cb(void* r _U_, const char* p, guint len _U_, const void* u1 _U
 
 static guint get_whatsapp_message_len(packet_info *pinfo, tvbuff_t *tvb, int offset)
 {
-  int length = tvb_length(tvb)-offset;
+  int length = tvb_captured_length(tvb)-offset;
   guint8* buffer = tvb_memdup(NULL, tvb, offset, length);
   int wa_len = whatsapp_data_length(buffer, length);
   g_free(buffer);
@@ -114,7 +114,7 @@ static int dissect_whatsapp_message(tvbuff_t *tvb, packet_info *pinfo, proto_tre
     proto_item *ti = proto_tree_add_item (tree, proto_whatsapp, tvb, 0,-1, ENC_NA);
     proto_tree * subtree = proto_item_add_subtree (ti, message_whatsapp);
 
-    int length = tvb_length(tvb);
+    int length = tvb_captured_length(tvb);
     guint8* buffer = tvb_memdup(NULL, tvb, 0, length);
     r = whatsapp_data_dissect_tree(buffer, length, subtree, tvb, pinfo);
     g_free(buffer);
@@ -356,7 +356,7 @@ void proto_register_whatsapp(void) {
 
 void proto_reg_handoff_whatsapp(void) {
   static dissector_handle_t whatsapp_handle;
-  whatsapp_handle = new_create_dissector_handle (dissect_whatsapp, proto_whatsapp);
+  whatsapp_handle = create_dissector_handle (dissect_whatsapp, proto_whatsapp);
   dissector_add_uint ("tcp.port", WHATSAPP_PORT, whatsapp_handle);
   dissector_add_uint ("tcp.port", WHATSAPP_PORT_NEW, whatsapp_handle);
 }
