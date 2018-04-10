@@ -3,21 +3,18 @@ wireshark-whatsapp
 
 Whatsapp dissector plugin for wireshark
 
-***Important*** I'm no longer working on this repo. This plugin works for protocol version 1.6 or older (check out the tags), with whatsapp protocol 2.0 it is probably necessary to perform MITM in order for a machine to capture the protocol data (since it uses an ephemeral shared secret calculated in a DH way) so this plugin becomes essentially useless. Still it is perfect as a base to implement 2.0 protocol.
+Fixed to work with Wireshark 2.4.5 using libwireshark-dev 2.4.5
 
 Get a copy
 ----------
-
-Ubuntu users may install the plugin using launchpad repo: https://launchpad.net/~wireshark-whatsapp/+archive/ppa
-
-Windows users may find releases at: https://www.gosell.it/product/whatsapp-dissector-for-wireshark-26
+Clone the repo
 
 Build and install
 -----------------
 
 1. Create a build directory and move to it, for example "mkdir build; cd build"
 2. Generate Makefile "cmake .."
-3. Now build the plugin "make"
+3. Now build the plugin "make" and make install
 4. And the plugin should be built as "whatsapp.so", just copy it to the plugins folder "cp whatsapp.so ~/.wireshark/plugins/"
  
 You need the wireshark headers, the glib-2.0 headers, the libcrypto headers (install openssl headers) and of course the gcc C/C++ compiler.
